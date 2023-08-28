@@ -1,5 +1,10 @@
 import styled from "styled-components"
 import { Link } from "react-router-dom"
+import { FormEvent, useEffect, useState } from "react"
+import { useAppDispatch, useAppSelector } from "../app/hooks"
+import { useNavigate } from "react-router-dom"
+import { toast } from "react-toastify"
+import { register, reset } from "../features/auth/authSlice"
 
 
 const MainDiv = styled.div`
@@ -35,7 +40,6 @@ const Header = styled.h1`
 const Content = styled.div`
   
 `
-
 
 const Label = styled.p`
   font-family: "Raleway", sans-serif;
@@ -87,7 +91,61 @@ const Span = styled.span`
 `
 
 
+const getInitialInputState= () => ({
+  username: "",
+  email: "",
+  password: "",
+  password2: "",
+})
+
+interface InputState {
+  username: string
+  email: string
+  password: string
+  password2: string
+}
+
 const RegisterPage = () => {
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+  const {user, isLoading, isError, isSuccess, message} = useAppSelector((state: any) => state.auth)
+  const [InputState, setInputState] = useState<InputState>(getInitialInputState())
+
+
+  useEffect(() => {
+    if(isError){
+      toast.error(message)
+    }
+    if(isSuccess || user){
+      navigate('/')
+      toast.success("Account Created")
+      dispatch(reset())
+    }
+  },[user, isLoading, isError, isSuccess, message, navigate, dispatch]) 
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const {name, value} = e.target
+    setInputState((prevState: InputState) => ({
+      ...prevState, [name]: value
+    }))
+  }
+
+  const onSubmit = (e: FormEvent)=>{
+    e.preventDefault()
+    if(InputState.password !== InputState.password2){
+      toast.error('Passwords do not match')
+    }else{
+      const userData = {
+        username: InputState.username,
+        email: InputState.email,
+        password: InputState.password
+      }
+      dispatch(register(userData))
+    }
+  }
+
+  
+
   return (
     <MainDiv>
       <InsideDiv>
@@ -95,18 +153,33 @@ const RegisterPage = () => {
           <Header> Please Create Your Account </Header>
 
           <Content>
-            <Form>
+            <Form onSubmit={onSubmit}>
                     <Label>Username</Label> 
-                    <Input type="" id="" name=""  /> 
+                    <Input type="text" 
+                    name="username"  
+                    value={InputState.username} 
+                    onChange={onChange}/> 
 
                     <Label>Email</Label> 
-                    <Input type="" id="" name=""  /> 
+                    <Input 
+                    type="text"  
+                    name="email"   
+                    value={InputState.email} 
+                    onChange={onChange}/> 
 
                     <Label>Password</Label> 
-                    <Input type="" id="" name="" /> 
+                    <Input 
+                    type="password" 
+                    name="password" 
+                    value={InputState.password} 
+                    onChange={onChange}/> 
 
                     <Label>Confirm Password</Label> 
-                    <Input type="" id="" name=""  /> 
+                    <Input 
+                    type="password"
+                    name="password2" 
+                    value={InputState.password2} 
+                    onChange={onChange}/> 
 
                     <ButtonDiv>
                       <SendMessage>Sign Up</SendMessage>

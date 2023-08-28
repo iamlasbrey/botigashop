@@ -1,7 +1,5 @@
 import styled from 'styled-components'
 
-const FeaturedCollections = () => {
-
 const MainDiv = styled.div`
     width: 100%;
 `
@@ -68,8 +66,9 @@ const TopImage = styled.img`
     width: 100%;
     height: 100%;
 `
-    
 
+
+const FeaturedCollections = () => {
 
   return (
     <MainDiv>

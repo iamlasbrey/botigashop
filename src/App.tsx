@@ -10,6 +10,8 @@ import RegisterPage from './Pages/RegisterPage'
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
 import ErrorPage from './Pages/ErrorPage'
+import { ToastContainer } from 'react-toastify'
+import "react-toastify/dist/ReactToastify.css"
 // import Quickview from './components/quickview/Quickview'
 // import Hamburger from './components/hamburger/Hamburger'
 
@@ -30,6 +32,7 @@ function App() {
       <Route path='*' element={<ErrorPage />} />
     </Routes>
     <Footer />
+    <ToastContainer />
     </>
   )
 }
