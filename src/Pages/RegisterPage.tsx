@@ -90,7 +90,6 @@ const Span = styled.span`
   font-weight: bold;
 `
 
-
 const getInitialInputState= () => ({
   username: "",
   email: "",
@@ -160,26 +159,26 @@ const RegisterPage = () => {
                     value={InputState.username} 
                     onChange={onChange}/> 
 
-                    <Label>Email</Label> 
-                    <Input 
-                    type="text"  
-                    name="email"   
-                    value={InputState.email} 
-                    onChange={onChange}/> 
+                      <Label>Email</Label> 
+                      <Input 
+                      type="text"  
+                      name="email"   
+                      value={InputState.email} 
+                      onChange={onChange}/> 
 
-                    <Label>Password</Label> 
-                    <Input 
-                    type="password" 
-                    name="password" 
-                    value={InputState.password} 
-                    onChange={onChange}/> 
+                      <Label>Password</Label> 
+                      <Input 
+                      type="password" 
+                      name="password" 
+                      value={InputState.password} 
+                      onChange={onChange}/> 
 
-                    <Label>Confirm Password</Label> 
-                    <Input 
-                    type="password"
-                    name="password2" 
-                    value={InputState.password2} 
-                    onChange={onChange}/> 
+                      <Label>Confirm Password</Label> 
+                      <Input 
+                      type="password"
+                      name="password2" 
+                      value={InputState.password2} 
+                      onChange={onChange}/> 
 
                     <ButtonDiv>
                       <SendMessage>Sign Up</SendMessage>

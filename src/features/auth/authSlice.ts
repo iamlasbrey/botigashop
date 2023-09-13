@@ -1,6 +1,5 @@
 import { createSlice , createAsyncThunk} from "@reduxjs/toolkit"; 
 import authService from "./authService";
-import { RootState } from "../../app/store";
 
 //define a type for the slice
 interface authState {
@@ -35,7 +34,23 @@ export const register = createAsyncThunk('auth/register', async(user:any, thunkA
 })
 
 
-export const authSlice = createSlice({
+//Login User
+export const login = createAsyncThunk('auth/login', async(user:any, thunkAPI)=>{
+    try {
+        return await authService.login(user);
+    } catch (error) {
+        if(error instanceof Error){
+            return thunkAPI.rejectWithValue(error.message);
+        }
+    }
+})
+
+export const logout = createAsyncThunk('auth/logout', async()=>{
+    await authService.logout();
+})
+
+
+export const authSlice:any = createSlice({
     name: 'auth',
     initialState,
     reducers: {
@@ -60,6 +75,23 @@ export const authSlice = createSlice({
             state.isLoading = false
             state.isError = true
             state.message = action.payload
+            state.user = null
+        })
+        .addCase(login.pending, (state)=>{
+            state.isLoading = true
+        })
+        .addCase(login.fulfilled, (state, action)=>{
+            state.isLoading = false
+            state.isSuccess = true
+            state.user = action.payload
+        })
+        .addCase(login.rejected, (state, action:any)=>{
+            state.isLoading = false
+            state.isError = true
+            state.message = action.payload
+            state.user = null
+        }) 
+        .addCase(logout.fulfilled, (state)=>{
             state.user = null
         })
     }

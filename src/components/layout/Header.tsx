@@ -1,8 +1,11 @@
 import styled from 'styled-components'
-import { BsSearch, BsPerson } from 'react-icons/bs'
 import { GrCart } from 'react-icons/gr'
 import {GiHamburgerMenu} from 'react-icons/gi'
 import { Link } from 'react-router-dom'
+import { useAppSelector } from "../../app/hooks"
+import {BsFillPersonFill} from 'react-icons/bs'
+import { logout } from "../../features/auth/authSlice"
+import { useAppDispatch } from "../../app/hooks"
 
 const MainDiv = styled.div`
     width: 100%;
@@ -59,7 +62,6 @@ const LI = styled.li`
 `
 
 const RightIcon = styled.li`
-
 `
 
 const Extreme = styled.div`
@@ -74,6 +76,27 @@ const Extreme = styled.div`
 
 const CartAndNumber = styled.div`
   position: relative;
+`
+const RightIcon1 = styled.div`
+  cursor: pointer;
+  position: relative;
+  font-family: 'Raleway', sans-serif;
+  position: relative;
+`
+
+const RightIcon2 = styled.li`
+  font-size: 1.5rem;
+  font-weight: bold;
+  font-family: 'Open Sans', sans-serif;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+`
+
+const RightIcon3 = styled.div`
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  font-weight: bold;
+  text-transform: capitalize;
 `
 
 const Letter = styled.span`
@@ -92,8 +115,37 @@ const Letter = styled.span`
   justify-content: center;
 `
 
+const BsDiv = styled.div`
+  margin-right: 5px;
+   font-size: 2rem;
+`
+const LogoutIcon = styled.button`
+  padding: 10px 30px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+    background: black;
+    color: white;
+    font-family: 'Raleway', sans-serif;
+    font-size: 1.2rem;
+    font-weight: bold;
+
+    &:hover {
+        background: #414141;
+    }
+`
 
 const Header = () => {
+
+  const { user } = useAppSelector((state: any) => state.auth)
+  const dispatch = useAppDispatch()
+  
+
+  const logoutForm =()=>{
+    dispatch(logout()) 
+  }
+  
   return (
     <MainDiv>
 
@@ -102,7 +154,6 @@ const Header = () => {
             <Link to='/'>
               <Image src='https://res.cloudinary.com/iamlasbrey/image/upload/v1691126337/botiga/B_O_T_I_G_Alogo_ljgzoo.png'/>
             </Link>
-
 
             <Center>
                   <LI><Link to='/'>Home</Link></LI>
@@ -113,8 +164,19 @@ const Header = () => {
 
             
               <RightIcons>
-                  <RightIcon> <BsSearch/> </RightIcon>
-                  <RightIcon> <BsPerson /> </RightIcon>
+
+              <RightIcon1> 
+                      {
+                        user ? (<RightIcon2> <BsDiv> <BsFillPersonFill/> </BsDiv> {user?.username} </RightIcon2> ) : <RightIcon3> <Link to='/login'> Login / Register </Link> </RightIcon3>
+                      }
+                       
+                  </RightIcon1>  
+
+                {
+                  user && (
+                    <LogoutIcon onClick={logoutForm}> Logout </LogoutIcon> 
+                  )
+                }          
 
                   <CartAndNumber>
                         <RightIcon> <GrCart /> </RightIcon>

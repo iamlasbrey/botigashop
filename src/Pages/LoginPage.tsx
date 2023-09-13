@@ -1,5 +1,10 @@
 import styled from "styled-components"
+import { toast } from "react-toastify"
 import { Link } from "react-router-dom"
+import { FormEvent, useEffect, useState } from "react"
+import { useAppDispatch, useAppSelector } from "../app/hooks"
+import { useNavigate } from "react-router-dom"
+import { login, reset } from "../features/auth/authSlice"
 
 
 const MainDiv = styled.div`
@@ -86,7 +91,52 @@ const Span = styled.span`
 `
 
 
+const getInitialInputState= () => ({
+  username: "",
+  password: "",
+})
+
+interface InputState {
+  username: string
+  password: string
+}
+
+
 const LoginPage = () => {
+  const [InputState, setInputState] = useState<InputState>(getInitialInputState())
+  const {user, isLoading, isError, isSuccess, message} = useAppSelector((state: any) => state.auth)
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+
+
+  useEffect(() => {
+    if(isError){
+      toast.error(message)
+    }
+    if(isSuccess || user){
+      navigate('/')
+      toast.success("Account Created")
+      dispatch(reset())
+    }
+  },[user, isLoading, isError, isSuccess, message, navigate, dispatch]) 
+  
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const {name, value} = e.target
+    setInputState((prevState: InputState) => ({
+      ...prevState, [name]: value
+    }))
+  }
+
+  const onSubmit = (e: FormEvent)=>{
+    e.preventDefault()
+    if(!InputState.username || !InputState.password){
+      return toast.error('All fields are required')
+    }
+    dispatch(login(InputState))
+  }
+
+
   return (
     <MainDiv>
       <InsideDiv>
@@ -94,19 +144,28 @@ const LoginPage = () => {
           <Header> Please Create Your Account </Header>
 
           <Content>
-            <Form>
+            <Form onSubmit={onSubmit}>
                     <Label>Username</Label> 
-                    <Input type="" id="" name=""  /> 
+                    <Input type="text"  
+                    name="username"  
+                    value={InputState.username}
+                    onChange={onChange}
+                    /> 
+                    
 
                     <Label>Password</Label> 
-                    <Input type="" id="" name="" />
+                    <Input type="password"  
+                    name="password" 
+                    value={InputState.password}
+                    onChange={onChange}
+                    />
 
                     <ButtonDiv>
                       <SendMessage>Login</SendMessage>
                     </ButtonDiv>
 
                     <HaveAccount>
-                        New here? <Link to='/login'><Span>Sign Up</Span></Link>
+                        New here? <Link to='/register'><Span>Sign Up</Span></Link>
                     </HaveAccount>
                     </Form>
               </Content>
