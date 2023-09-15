@@ -3,15 +3,18 @@ import FeaturedCollections from "../components/homepage/FeaturedCollections"
 import Hero from "../components/homepage/Hero"
 import styled from "styled-components"
 
+
+
 const MainDiv = styled.div`
   width: 100%;
 `
 
-const HomePage = () => {
+const HomePage:React.FC= () => {
+  
   return (
     <MainDiv>
         <Hero />
-        <Featured />
+          <Featured />
         <FeaturedCollections />
     </MainDiv>
   )

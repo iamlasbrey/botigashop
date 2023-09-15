@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import { Link } from "react-router-dom"
 
 const MainDiv = styled.div`
   width: 100%;
@@ -88,7 +89,9 @@ const Hero = () => {
         <MainContent>
             <HeaderText>Welcome to Botiga</HeaderText>
             <SubHeaderText>Headline that grabs people’s attention</SubHeaderText>
-            <HeaderButton>Shop Now</HeaderButton>
+            <HeaderButton>
+                <Link to='/shop'> Shop Now </Link>
+            </HeaderButton>
         </MainContent>
     </MainDiv>
   )

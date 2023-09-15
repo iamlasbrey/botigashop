@@ -1,4 +1,10 @@
 import styled from "styled-components"
+import { useAppSelector } from "../../app/hooks"
+import { myProduct } from "../../models/productModel"
+import { open } from "../../features/modals/QuickViewSlice"
+import { useAppDispatch } from "../../app/hooks"
+import { Link } from "react-router-dom"
+
 
 const MainDiv = styled.div`
     width: 100%;
@@ -180,52 +186,38 @@ const ShopNowButton = styled.button`
 `
 
 
-    
+const Featured: React.FC =()=> {
 
-const Featured = () => {
+    const { products } = useAppSelector((state:any) => state.products)
+    const dispatch = useAppDispatch()
+
+    const OpenModal=(id:string)=>{
+        localStorage.setItem('quickid', id)
+        dispatch(open())
+    }
+
+    
   return (
-    <MainDiv>
+        <MainDiv>
         <InsideDiv>
             <FeaturedHeader>Featured Collection</FeaturedHeader>
             <FeaturedText>We have a wide range of cosmetic products made of natural ingredients. Cocolo Beauty has a leading cosmetic company</FeaturedText>
             <GridContainer>
-
-                <GridItem>
-                    <Top>
-                        <Image src="https://res.cloudinary.com/iamlasbrey/image/upload/v1691406062/botiga/Glamifiedpeach-420x504_1_igqa3z.jpg"/>
-                        <Dissapear> <Quick> Quick View </Quick></Dissapear>
-                    </Top>
-                    <Bottom>
-                        <Desc>Eternal Sunset Collection Lip and Cheekstick</Desc>
-                        <Price>$500</Price>
-                        <Add> Add To Cart </Add>
-                    </Bottom>
-                </GridItem>
-
-                <GridItem>
-                    <Top>
-                        <Image src="https://res.cloudinary.com/iamlasbrey/image/upload/v1691406062/botiga/Glamifiedpeach-420x504_1_igqa3z.jpg"/>
-                        <Dissapear> <Quick> Quick View </Quick></Dissapear>
-                    </Top>
-                    <Bottom>
-                    <Desc>Eternal Sunset Collection Lip and Cheekstick</Desc>
-                        <Price>$500</Price>
-                        <Add> Add To Cart </Add>
-                    </Bottom>
-                </GridItem>
-
-                <GridItem>
-                    <Top>
-                        <Image src="https://res.cloudinary.com/iamlasbrey/image/upload/v1691406062/botiga/Glamifiedpeach-420x504_1_igqa3z.jpg"/>
-                        <Dissapear> <Quick> Quick View </Quick></Dissapear>
-                    </Top>
-                    <Bottom>
-                    <Desc>Eternal Sunset Collection Lip and Cheekstick</Desc>
-                        <Price>$500</Price>
-                        <Add> Add To Cart </Add>
-                    </Bottom>
-                </GridItem>
-
+                {
+                    products?.filter((product:myProduct)=>product.featured)?.map((product:myProduct)=>(
+                        <GridItem key={product._id}>
+                        <Top>
+                            <Image src={product?.img[0]}/>
+                            <Dissapear> <Quick onClick={()=>OpenModal(product._id)}> Quick View </Quick></Dissapear>
+                        </Top>
+                        <Bottom>
+                            <Desc>{product?.desc.slice(0, 70)}</Desc>
+                            <Price>${product?.price}</Price>
+                            <Add> Add To Cart </Add>
+                        </Bottom>
+                    </GridItem>
+                    ))
+                }
                 </GridContainer>
         </InsideDiv>
 
@@ -233,10 +225,13 @@ const Featured = () => {
         <ShopNowDivItems>
             <ShopNowHeader> Highlighted Section </ShopNowHeader>
             <ShopNowText> Try our product once and you will love to buy again we are giving up to 40% off to our new customers so don’t miss the opportunity to grab the deals today. </ShopNowText>
-            <ShopNowButton>Shop Now</ShopNowButton>
+            <ShopNowButton>
+                <Link to='/shop'> Shop Now </Link>
+            </ShopNowButton>
         </ShopNowDivItems>
       </ShopNowDiv>
     </MainDiv>
+    
   )
 }
 

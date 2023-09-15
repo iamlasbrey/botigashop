@@ -19,7 +19,7 @@ const login  = async(userData:any)=>{
     return response.data
 }
 
-const logout =()=>{
+const logout=()=>{
     localStorage.removeItem('user')
 }
 

@@ -1,9 +1,14 @@
 import styled from 'styled-components'
+import bath from "../../imgassets/bath.jpg"
+import lip from "../../imgassets/lip.jpg"
+import make from "../../imgassets/makeup.jpg"
+import treat from "../../imgassets/treat.jpg"
+import { Link } from 'react-router-dom'
+
 
 const MainDiv = styled.div`
     width: 100%;
-`
-    
+`   
 const InsideDiv = styled.div`
     width: 90%;
     max-width: 1400px;
@@ -70,6 +75,7 @@ const TopImage = styled.img`
 
 const FeaturedCollections = () => {
 
+    
   return (
     <MainDiv>
     <InsideDiv>
@@ -77,26 +83,24 @@ const FeaturedCollections = () => {
         <FeaturedText> Give your customers insight into your product collection. Select imagery and name that relates to the product category. </FeaturedText>
 
         <GridContainer>
-
             <GridItem>
-                    <TopImage src='https://res.cloudinary.com/iamlasbrey/image/upload/v1691594663/botiga/Rectangle-582-1_xtqbfp.jpg'/>
-                    <Dissapear> Quick View </Dissapear>
+                    <TopImage src={bath}/>
+                    <Dissapear> <Link to='/shop'> Make Up </Link> </Dissapear>
             </GridItem>
 
             <GridItem>
-                    <TopImage src='https://res.cloudinary.com/iamlasbrey/image/upload/v1691594663/botiga/Rectangle-582-1_xtqbfp.jpg'/>
-
-                    <Dissapear> Quick View </Dissapear>
+                    <TopImage src={lip}/>
+                    <Dissapear> <Link to='/shop'> Lip Stick </Link> </Dissapear>
             </GridItem>
 
             <GridItem>
-                    <TopImage src='https://res.cloudinary.com/iamlasbrey/image/upload/v1691594663/botiga/Rectangle-582-1_xtqbfp.jpg'/>
-                    <Dissapear> Quick View </Dissapear>
+                    <TopImage src={make}/>
+                    <Dissapear> <Link to='/shop'>Bath Product </Link> </Dissapear>
             </GridItem>
 
             <GridItem>
-                    <TopImage src='https://res.cloudinary.com/iamlasbrey/image/upload/v1691594663/botiga/Rectangle-582-1_xtqbfp.jpg'/>
-                    <Dissapear> Quick View </Dissapear>
+                    <TopImage src={treat}/>
+                    <Dissapear> <Link to='/shop'> Treatment </Link></Dissapear>
             </GridItem>
 
         </GridContainer>

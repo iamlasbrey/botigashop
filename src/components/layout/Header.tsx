@@ -7,10 +7,11 @@ import {BsFillPersonFill} from 'react-icons/bs'
 import { logout } from "../../features/auth/authSlice"
 import { useAppDispatch } from "../../app/hooks"
 
-const MainDiv = styled.div`
+const MainDiv = styled.div <{$primary?: boolean}>`
     width: 100%;
     font-family: 'Raleway', sans-serif;
     padding: 30px 0px 30px 0px;
+    position: relative;
     `
 
 const InsideDiv = styled.div`
@@ -84,6 +85,28 @@ const RightIcon1 = styled.div`
   position: relative;
 `
 
+const LogoutIcon = styled.button`
+    position: absolute;
+    padding: 5px 20px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+    background: black;
+    color: white;
+    font-family: 'Raleway', sans-serif;
+    font-size: 1rem;
+    font-weight: bold;
+    top: 43px;
+    right: -6px;
+    display: none;
+
+    &:hover {
+        background: #414141;
+    }
+`
+
+
 const RightIcon2 = styled.li`
   font-size: 1.5rem;
   font-weight: bold;
@@ -91,6 +114,11 @@ const RightIcon2 = styled.li`
   cursor: pointer;
   display: flex;
   align-items: center;
+
+
+  &:hover ${LogoutIcon}{
+    display: inline-block
+  }
 `
 
 const RightIcon3 = styled.div`
@@ -119,22 +147,6 @@ const BsDiv = styled.div`
   margin-right: 5px;
    font-size: 2rem;
 `
-const LogoutIcon = styled.button`
-  padding: 10px 30px;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border-radius: 5px;
-    background: black;
-    color: white;
-    font-family: 'Raleway', sans-serif;
-    font-size: 1.2rem;
-    font-weight: bold;
-
-    &:hover {
-        background: #414141;
-    }
-`
 
 const Header = () => {
 
@@ -147,13 +159,14 @@ const Header = () => {
   }
   
   return (
-    <MainDiv>
+    <MainDiv $primary>
 
         <InsideDiv>
 
             <Link to='/'>
               <Image src='https://res.cloudinary.com/iamlasbrey/image/upload/v1691126337/botiga/B_O_T_I_G_Alogo_ljgzoo.png'/>
             </Link>
+
 
             <Center>
                   <LI><Link to='/'>Home</Link></LI>
@@ -167,16 +180,11 @@ const Header = () => {
 
               <RightIcon1> 
                       {
-                        user ? (<RightIcon2> <BsDiv> <BsFillPersonFill/> </BsDiv> {user?.username} </RightIcon2> ) : <RightIcon3> <Link to='/login'> Login / Register </Link> </RightIcon3>
-                      }
-                       
-                  </RightIcon1>  
-
-                {
-                  user && (
-                    <LogoutIcon onClick={logoutForm}> Logout </LogoutIcon> 
-                  )
-                }          
+                        user ? (<RightIcon2 onClick={logoutForm}> <BsDiv> <BsFillPersonFill/> </BsDiv> {user?.username} <LogoutIcon onClick={logoutForm}> Logout </LogoutIcon> </RightIcon2> ) : <RightIcon3> <Link to='/login'> Login / Register </Link> </RightIcon3>
+                      }    
+                </RightIcon1>  
+                
+                
 
                   <CartAndNumber>
                         <RightIcon> <GrCart /> </RightIcon>

@@ -12,15 +12,31 @@ import Footer from './components/layout/Footer'
 import ErrorPage from './Pages/ErrorPage'
 import { ToastContainer } from 'react-toastify'
 import "react-toastify/dist/ReactToastify.css"
-// import Quickview from './components/quickview/Quickview'
+import Quickview from './components/quickview/Quickview'
+import ScrollToTop from './router/ScrollTop'
+import { useEffect } from "react"
+import { useAppDispatch, useAppSelector } from "./app/hooks"
+import { getProducts, reset } from "./features/products/productSlice"
 // import Hamburger from './components/hamburger/Hamburger'
 
-function App() {
+
+
+const App:React.FC =()=>{
+
+  const dispatch = useAppDispatch()
+  const { isError, message } = useAppSelector((state: any) => state.products)
+
+  useEffect(() => {
+    if(isError) console.log(message);
+    dispatch(getProducts())
+    return () => { reset() }
+  }, [ dispatch, isError, message ])
+
   return (
     <>
-    {/* <Quickview /> */}
+    <Quickview  /> 
     <Header />
-    {/* <Hamburger /> */}
+    <ScrollToTop></ScrollToTop>
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/contact" element={<ContactPage />} />

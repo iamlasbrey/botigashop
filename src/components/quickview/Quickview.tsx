@@ -1,6 +1,16 @@
 import styled from "styled-components"
 import {IoMdClose} from 'react-icons/io'
 import {AiOutlineMinus, AiOutlinePlus} from 'react-icons/ai'
+import { useAppSelector } from "../../app/hooks"
+import { close } from "../../features/modals/QuickViewSlice"
+import { useAppDispatch } from "../../app/hooks"
+import { useState } from "react"
+import axios from 'axios'
+import { useEffect } from "react"
+import { myProduct } from "../../models/productModel"
+
+
+
 
 const MainDiv = styled.div`
   width: 100%;
@@ -33,9 +43,8 @@ const BootmDiv = styled.div`
     padding: 40px; 
     display: flex;
     justify-content: space-between;
-    height: 600px;
-    max-height: 100%;
-    overflow-y: scroll;
+    height: 72%;
+    max-height: 900px;
 
     @media screen and (max-width:500px) {
         flex-direction: column;
@@ -174,49 +183,89 @@ const Price = styled.h1`
   margin-bottom: 1rem;
 `
 
+
+
 const Quickview = () => {
+  const [ singleProduct, setsingleProduct ] = useState<myProduct>()
+  const [ loading, isLoading ] = useState<boolean>(false)
+
+  const { visible } = useAppSelector((state: any) => state.quickModal)
+  const dispatch = useAppDispatch()
+
+  const closeModal=()=>{
+    localStorage.removeItem('quickid')
+    dispatch(close())
+  }
+
+  const id = localStorage.getItem('quickid')
+
+  const getQuickItems=async()=>{
+    isLoading(true)
+    try {
+      if(id){
+      const ItemRaw = await axios.get(`/api/products/find/${id}`)
+      const Item = ItemRaw.data
+      setsingleProduct(Item)
+      isLoading(false)
+    }
+    } catch (error) {
+        isLoading(false)
+        console.log(error);   
+    }
+  }
+
+  
+  useEffect(() => {
+      getQuickItems()
+    return () => {}
+  }, [id])  
+
   return (
-    <MainDiv>
-        <InsideDiv>
-            <CloseDiv>
-                <IoMdClose style={{cursor: 'pointer'}}/>
-            </CloseDiv>
-                <BootmDiv>
-                        <Left>
-                            <Top>
-                                <TopImage src="https://res.cloudinary.com/iamlasbrey/image/upload/v1692194626/botiga/Allure_ydlytz.jpg"/>
-                            </Top>
-                            <Bottom>
-                            <UL>
-                                <LI> <ULImage src='https://res.cloudinary.com/iamlasbrey/image/upload/v1692194626/botiga/Allure_ydlytz.jpg'/> </LI>
-                                <LI> <ULImage src='https://res.cloudinary.com/iamlasbrey/image/upload/v1692194626/botiga/Allure_ydlytz.jpg'/> </LI>
-                                <LI> <ULImage src='https://res.cloudinary.com/iamlasbrey/image/upload/v1692194626/botiga/Allure_ydlytz.jpg'/> </LI>
-                                <LI> <ULImage src='https://res.cloudinary.com/iamlasbrey/image/upload/v1692194626/botiga/Allure_ydlytz.jpg'/> </LI>
-                        </UL>
-                            </Bottom>
-                        </Left>
-                        <Right>
-                        <RightHeader>Deep Sweep 2% BHA Pore Cleaning Toner</RightHeader>
-                            <Price>$20</Price>
-                            <Desc> Try our new product with 2% BHA pore cleaner for extra cleansing of your beautiful skin </Desc>
-                <CounterCart>
-                  <CounterDiv>
-                    <Counter>
-                        <AiOutlineMinus style={{cursor: 'pointer'}}/> <SpanNumber>1</SpanNumber> < AiOutlinePlus style={{cursor: 'pointer'}}/>
-                    </Counter>
-                    </CounterDiv>
-                  <AddCart> Add To Cart </AddCart>
-                </CounterCart>
+    visible && (
+      <MainDiv>
+      <InsideDiv>
+          <CloseDiv>
+              <IoMdClose style={{cursor: 'pointer'}} onClick={closeModal}/>
+          </CloseDiv>
+              <BootmDiv>
+                      <Left>
+                          <Top>
+                              <TopImage src={singleProduct?.img[0]}/>
+                          </Top>
+                          <Bottom>
+                          <UL>
+                            {
+                              singleProduct?.img?.map((list)=>(
+                                <LI> <ULImage src={list} /> </LI>
+                              ))
+                            }                         
+                      </UL>
+                          </Bottom>
+                      </Left>
+                      <Right>
+                      <RightHeader> {singleProduct?.title}  </RightHeader>
+                          <Price>$ {singleProduct?.price} </Price>
+                          <Desc> {singleProduct?.desc} </Desc>
+              <CounterCart>
+                <CounterDiv>
+                  <Counter>
+                      <AiOutlineMinus style={{cursor: 'pointer'}}/> <SpanNumber>1</SpanNumber> < AiOutlinePlus style={{cursor: 'pointer'}}/>
+                  </Counter>
+                  </CounterDiv>
+                <AddCart> Add To Cart </AddCart>
+              </CounterCart>
 
-                <Divider />
+              <Divider />
 
-                <AnotherHeader>Category : <AnotherHeader2> Cosmetics </AnotherHeader2></AnotherHeader>
+              <AnotherHeader>Category : <AnotherHeader2> {singleProduct?.categories} </AnotherHeader2></AnotherHeader>
 
-                        </Right>
-                </BootmDiv>
-        </InsideDiv>
-    </MainDiv>
-  )
+                      </Right>
+              </BootmDiv>
+      </InsideDiv>
+  </MainDiv>
+
+    )
+    )
 }
 
 export default Quickview

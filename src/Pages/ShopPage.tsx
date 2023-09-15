@@ -1,5 +1,8 @@
 import styled from 'styled-components'
 import {FaCaretDown} from 'react-icons/fa'
+import { useAppDispatch, useAppSelector } from "../app/hooks"
+import { myProduct } from '../models/productModel'
+import { useState } from 'react'
 
 const MainDiv = styled.div`
   width: 100%;
@@ -174,8 +177,12 @@ const Option = styled.option`
 `
 
 
+const ShopPage  = () => {
 
-const ShopPage = () => {
+  const {products} = useAppSelector((state: any) => state.products)
+  const [productlist, setProductlist] = useState<myProduct[]>(products)
+  
+
   return (
     <MainDiv>
       <InsideDiv>
@@ -184,7 +191,7 @@ const ShopPage = () => {
 
           <FilterDiv>
               <FilterLeft>
-                Showing All 8 Items
+                Showing All {products?.length} Items
               </FilterLeft>
               <FilterRight>
                   <Select> 
@@ -198,72 +205,23 @@ const ShopPage = () => {
           </FilterDiv>
 
         <ProductItems>
-            <ProductItem>
+          {
+            productlist?.map((product:myProduct)=>(
+              <ProductItem key={product?._id}>
               <Top>
-                <Image src="https://res.cloudinary.com/iamlasbrey/image/upload/v1691406062/botiga/Glamifiedpeach-420x504_1_igqa3z.jpg"/>
+                <Image src={product?.img[0]} />
                 <Dissapear><Quick>Quick View</Quick></Dissapear>
               </Top>
               <Bottom>
-                  <Desc>Eternal Sunset Collection Lip and Cheekstick</Desc>
-                  <Price>$500</Price>
+                  <Desc>{product?.desc}</Desc>
+                  <Price>${product?.price}</Price>
                   <AddCart> Add To Cart </AddCart>
               </Bottom>
-            </ProductItem>
 
-            <ProductItem>
-              <Top>
-                <Image src="https://res.cloudinary.com/iamlasbrey/image/upload/v1691406062/botiga/Glamifiedpeach-420x504_1_igqa3z.jpg"/>
-              </Top>
-              <Bottom>
-                  <Desc>Eternal Sunset Collection Lip and Cheekstick</Desc>
-                  <Price>$500</Price>
-                  <AddCart> Add To Cart </AddCart>
-              </Bottom>
             </ProductItem>
+            ))
+          }
 
-            <ProductItem>
-              <Top>
-                <Image src="https://res.cloudinary.com/iamlasbrey/image/upload/v1691406062/botiga/Glamifiedpeach-420x504_1_igqa3z.jpg"/>
-              </Top>
-              <Bottom>
-                  <Desc>Eternal Sunset Collection Lip and Cheekstick</Desc>
-                  <Price>$500</Price>
-                  <AddCart> Add To Cart </AddCart>
-              </Bottom>
-            </ProductItem>
-
-            <ProductItem>
-              <Top>
-                <Image src="https://res.cloudinary.com/iamlasbrey/image/upload/v1691406062/botiga/Glamifiedpeach-420x504_1_igqa3z.jpg"/>
-              </Top>
-              <Bottom>
-                  <Desc>Eternal Sunset Collection Lip and Cheekstick</Desc>
-                  <Price>$500</Price>
-                  <AddCart> Add To Cart </AddCart>
-              </Bottom>
-            </ProductItem>
-
-            <ProductItem>
-              <Top>
-                <Image src="https://res.cloudinary.com/iamlasbrey/image/upload/v1691406062/botiga/Glamifiedpeach-420x504_1_igqa3z.jpg"/>
-              </Top>
-              <Bottom>
-                  <Desc>Eternal Sunset Collection Lip and Cheekstick</Desc>
-                  <Price>$500</Price>
-                  <AddCart> Add To Cart </AddCart>
-              </Bottom>
-            </ProductItem>
-
-            <ProductItem>
-              <Top>
-                <Image src="https://res.cloudinary.com/iamlasbrey/image/upload/v1691406062/botiga/Glamifiedpeach-420x504_1_igqa3z.jpg"/>
-              </Top>
-              <Bottom>
-                  <Desc>Eternal Sunset Collection Lip and Cheekstick</Desc>
-                  <Price>$500</Price>
-                  <AddCart> Add To Cart </AddCart>
-              </Bottom>
-            </ProductItem>
         </ProductItems>
 
       </InsideDiv>
