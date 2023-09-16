@@ -90,7 +90,7 @@ const Hero = () => {
             <HeaderText>Welcome to Botiga</HeaderText>
             <SubHeaderText>Headline that grabs people’s attention</SubHeaderText>
             <HeaderButton>
-                <Link to='/shop'> Shop Now </Link>
+                <Link to='/shop/cosmetics'> Shop Now </Link>
             </HeaderButton>
         </MainContent>
     </MainDiv>

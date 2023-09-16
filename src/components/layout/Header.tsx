@@ -171,7 +171,7 @@ const Header = () => {
             <Center>
                   <LI><Link to='/'>Home</Link></LI>
                   <LI><Link to='/blog'>Blog</Link></LI>
-                  <LI><Link to='/shop'>Shop</Link></LI>
+                  <LI><Link to='/shop/cosmetics'>Shop</Link></LI>
                   <LI><Link to='/contact'>Contact</Link></LI>
             </Center>
 
@@ -183,8 +183,6 @@ const Header = () => {
                         user ? (<RightIcon2 onClick={logoutForm}> <BsDiv> <BsFillPersonFill/> </BsDiv> {user?.username} <LogoutIcon onClick={logoutForm}> Logout </LogoutIcon> </RightIcon2> ) : <RightIcon3> <Link to='/login'> Login / Register </Link> </RightIcon3>
                       }    
                 </RightIcon1>  
-                
-                
 
                   <CartAndNumber>
                         <RightIcon> <GrCart /> </RightIcon>

@@ -226,7 +226,7 @@ const Featured: React.FC =()=> {
             <ShopNowHeader> Highlighted Section </ShopNowHeader>
             <ShopNowText> Try our product once and you will love to buy again we are giving up to 40% off to our new customers so don’t miss the opportunity to grab the deals today. </ShopNowText>
             <ShopNowButton>
-                <Link to='/shop'> Shop Now </Link>
+                <Link to='/shop/cosmetics'> Shop Now </Link>
             </ShopNowButton>
         </ShopNowDivItems>
       </ShopNowDiv>

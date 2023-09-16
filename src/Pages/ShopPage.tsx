@@ -1,8 +1,12 @@
 import styled from 'styled-components'
-import {FaCaretDown} from 'react-icons/fa'
-import { useAppDispatch, useAppSelector } from "../app/hooks"
+import { useAppDispatch } from "../app/hooks"
 import { myProduct } from '../models/productModel'
-import { useState } from 'react'
+import { open } from '../features/modals/QuickViewSlice'
+import { useLocation } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
+
+
 
 const MainDiv = styled.div`
   width: 100%;
@@ -148,28 +152,22 @@ const AddCart = styled.button`
     }
 `
 
+
 const Select = styled.select`
   font-family: "Raleway", sans-serif;
   cursor: pointer;
   border: none;
-  appearance: none;
   padding: 10px 30px 10px 15px;
   color: black;
   outline: none;
   font-size: clamp(1.2rem, 3vw, 1.4rem);
+  background-image: none;
+
+  &:ms-expand{
+    display: none;
+  }
 `
 
-const Caret = styled.div`
-  position: absolute;
-  height: 100%;
-  width: 50px;
-  right: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 30px;
-
-`
 
 const Option = styled.option`
   cursor: pointer;
@@ -178,11 +176,66 @@ const Option = styled.option`
 
 
 const ShopPage  = () => {
-
-  const {products} = useAppSelector((state: any) => state.products)
-  const [productlist, setProductlist] = useState<myProduct[]>(products)
+  const [filters, setFilters] = useState<string>("default")
+  const [shopItems, setShopItems] = useState<myProduct[]>([])
+  const [fullList, setFullList] = useState<myProduct[]>([])
+  const dispatch = useAppDispatch()
   
 
+  const OpenModal=(id:string)=>{
+    localStorage.setItem('quickid', id)
+    dispatch(open())
+}
+
+  const location = useLocation()
+  const cat = location.pathname.split("/")[2]
+
+  const handleFilters=(event: React.FormEvent<HTMLSelectElement>)=>{
+    const value = event.currentTarget.value
+    setFilters(value)
+  }
+  
+
+        useEffect(() => {
+               const getProduct=async()=>{
+                try {
+                  const res = await axios.get(
+                    cat ?
+                    `/api/products?category=${cat}`
+                    : '/api/products'
+                    )
+                  setShopItems(res.data);
+                  setFullList(res.data)
+                } catch (error) {
+                  console.log(error); 
+                }  
+               }
+               getProduct()
+        }, [cat])
+
+
+
+        useEffect(() => {
+          if(filters === "newest"){
+            setShopItems((prev)=>
+              [...prev].sort((a,b)=> parseInt(a.createdAt) - parseInt(b.createdAt))
+              )
+          }else if (filters === "low"){
+            setShopItems((prev)=>
+            [...prev].sort((a,b)=> a.price - b.price)
+            )
+        }
+          else if (filters === "high") {
+            setShopItems((prev)=>
+          [...prev].sort((a,b)=> b.price - a.price)
+          )
+      }else setShopItems(fullList)      
+        }, [filters])
+
+        
+        
+
+  
   return (
     <MainDiv>
       <InsideDiv>
@@ -191,29 +244,33 @@ const ShopPage  = () => {
 
           <FilterDiv>
               <FilterLeft>
-                Showing All {products?.length} Items
+                Showing All {shopItems?.length} Items
               </FilterLeft>
+
               <FilterRight>
-                  <Select> 
-                    <Option> Default Sorting </Option>
-                    <Option> Sort By Latest  </Option>
-                    <Option> Sort By Price : Low to High </Option>
-                    <Option> Sort By Price : High to Low  </Option>
+
+            
+                  <Select onChange={handleFilters}> 
+                    <Option value="default"> Default Sorting </Option>
+                    <Option value="newest"> Sort By Latest  </Option>
+                    <Option value="low"> Sort By Price : Low to High </Option>
+                    <Option value="high"> Sort By Price : High to Low  </Option>
                   </Select>
-                  <Caret> <FaCaretDown /> </Caret>
+              
+
               </FilterRight>
           </FilterDiv>
 
         <ProductItems>
           {
-            productlist?.map((product:myProduct)=>(
+            shopItems?.map((product:myProduct)=>(
               <ProductItem key={product?._id}>
               <Top>
                 <Image src={product?.img[0]} />
-                <Dissapear><Quick>Quick View</Quick></Dissapear>
+                <Dissapear><Quick onClick={()=>OpenModal(product._id)} >Quick View</Quick></Dissapear>
               </Top>
               <Bottom>
-                  <Desc>{product?.desc}</Desc>
+                  <Desc>{ product?.title} </Desc>
                   <Price>${product?.price}</Price>
                   <AddCart> Add To Cart </AddCart>
               </Bottom>

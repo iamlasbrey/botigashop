@@ -84,23 +84,23 @@ const FeaturedCollections = () => {
 
         <GridContainer>
             <GridItem>
-                    <TopImage src={bath}/>
-                    <Dissapear> <Link to='/shop'> Make Up </Link> </Dissapear>
+                    <TopImage src={make}/>
+                    <Dissapear> <Link to='/shop/makeup'> Make Up </Link> </Dissapear>
             </GridItem>
 
             <GridItem>
                     <TopImage src={lip}/>
-                    <Dissapear> <Link to='/shop'> Lip Stick </Link> </Dissapear>
+                    <Dissapear> <Link to='/shop/lipstick'> Lip Stick </Link> </Dissapear>
             </GridItem>
 
             <GridItem>
-                    <TopImage src={make}/>
-                    <Dissapear> <Link to='/shop'>Bath Product </Link> </Dissapear>
+                    <TopImage src={bath}/>
+                    <Dissapear> <Link to='/shop/bath'>Bath Product </Link> </Dissapear>
             </GridItem>
 
             <GridItem>
                     <TopImage src={treat}/>
-                    <Dissapear> <Link to='/shop'> Treatment </Link></Dissapear>
+                    <Dissapear> <Link to='/shop/treatment'> Treatment </Link></Dissapear>
             </GridItem>
 
         </GridContainer>

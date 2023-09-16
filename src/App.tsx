@@ -17,12 +17,14 @@ import ScrollToTop from './router/ScrollTop'
 import { useEffect } from "react"
 import { useAppDispatch, useAppSelector } from "./app/hooks"
 import { getProducts, reset } from "./features/products/productSlice"
+import { useNavigate } from 'react-router-dom'
 // import Hamburger from './components/hamburger/Hamburger'
 
 
 
 const App:React.FC =()=>{
 
+  const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const { isError, message } = useAppSelector((state: any) => state.products)
 
@@ -30,7 +32,7 @@ const App:React.FC =()=>{
     if(isError) console.log(message);
     dispatch(getProducts())
     return () => { reset() }
-  }, [ dispatch, isError, message ])
+  }, [ dispatch, isError, message, navigate])
 
   return (
     <>
@@ -40,7 +42,7 @@ const App:React.FC =()=>{
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/contact" element={<ContactPage />} />
-      <Route path="/shop" element={<ShopPage />} />
+      <Route path="/shop/:category" element={<ShopPage />} />
       <Route path="/blog" element={<BlogPage />} />
       <Route path="/product/:id" element={<SinglePage />} />
       <Route path="/login" element={<LoginPage />} />
