@@ -2,7 +2,9 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import {AiOutlineMinus, AiOutlinePlus} from 'react-icons/ai'
 import { useEffect, useState } from 'react'
-
+import { myProduct } from '../models/productModel'
+import axios from 'axios'
+import { useParams } from 'react-router-dom'
 
 const MainDiv = styled.div`
   width: 100%;
@@ -182,7 +184,38 @@ const AnotherHeader = styled.h1`
 const AnotherHeader2 = styled.span``
 
 
+type singleProduct = {
+        _id: string;
+        title: string;
+        desc: string;
+        featured: boolean;
+        img: string[];
+        categories: string;
+        price: number;
+        createdAt: string;
+        updatedAt: string;
+        __v: number;
+};
+
+
 const SinglePage = () => {
+  const [SinglePageData, setSinglePageData] = useState<singleProduct>()
+  const params = useParams()
+  const id = params.id;
+
+  useEffect(()=>{
+    const fetchSingleProduct=async()=>{
+        try {
+          const res = await axios.get(`/api/products/find/${id}`)
+          setSinglePageData(res.data)
+        } catch (error) {
+          console.log(error);
+        }
+    }
+    fetchSingleProduct()
+  },[id])  
+
+
 
   return (
     <MainDiv>
@@ -190,28 +223,31 @@ const SinglePage = () => {
        <InsideDiv>
 
         <HeaderDiv>
-            <SubHeader> <Link to='/'> Home </Link> </SubHeader> <Span> / </Span> <SubHeader> Category </SubHeader> <Span> / </Span> <SubHeader> Eternal Sunset Collection Lip and Cheek </SubHeader> 
+            <SubHeader> <Link to='/'> Home </Link> </SubHeader> <Span> / </Span> <SubHeader> {SinglePageData?.categories} </SubHeader> <Span> / </Span> <SubHeader> {SinglePageData?.title} </SubHeader> 
         </HeaderDiv>
 
         <ContentDiv>
         <Left>
           <LeftOne>
             <UL>
-              <LI> <ULImage src='https://res.cloudinary.com/iamlasbrey/image/upload/v1692194626/botiga/Allure_ydlytz.jpg'/> </LI>
-              <LI> <ULImage src='https://res.cloudinary.com/iamlasbrey/image/upload/v1692194626/botiga/Allure_ydlytz.jpg'/> </LI>
-              <LI> <ULImage src='https://res.cloudinary.com/iamlasbrey/image/upload/v1692194626/botiga/Allure_ydlytz.jpg'/> </LI>
-              <LI> <ULImage src='https://res.cloudinary.com/iamlasbrey/image/upload/v1692194626/botiga/Allure_ydlytz.jpg'/> </LI>
+              {
+                SinglePageData?.img?.map((myimage)=>(
+                  <LI>
+                    <ULImage src={myimage} />
+                  </LI>
+                ))
+              }
             </UL>
           </LeftOne>
           <LeftTwo>
-                <LeftTwoImage src='https://res.cloudinary.com/iamlasbrey/image/upload/v1692194626/botiga/Allure_ydlytz.jpg'/>
+                <LeftTwoImage src={SinglePageData?.img[0]} />
           </LeftTwo>
         </Left>
             
             <Right>
-                <RightHeader>Eternal Sunset Collection Lip and Cheek</RightHeader>
-                <Price> $40 </Price>
-                <Desc> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras luctus congue nisi.</Desc>
+                <RightHeader>{SinglePageData?.title} </RightHeader>
+                <Price> ${SinglePageData?.price} </Price>
+                <Desc> ${SinglePageData?.desc} </Desc>
 
                 <CounterCart>
                   <CounterDiv>
@@ -224,7 +260,7 @@ const SinglePage = () => {
 
                 <Divider />
 
-                <AnotherHeader>Category : <AnotherHeader2> Cosmetics </AnotherHeader2></AnotherHeader>
+                <AnotherHeader>Category : <AnotherHeader2> {SinglePageData?.categories} </AnotherHeader2></AnotherHeader>
 
             </Right>
 
