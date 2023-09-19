@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import {AiOutlineMinus, AiOutlinePlus} from 'react-icons/ai'
+import { useEffect, useState } from 'react'
 
 
 const MainDiv = styled.div`

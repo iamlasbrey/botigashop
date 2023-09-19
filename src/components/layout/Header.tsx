@@ -6,6 +6,8 @@ import { useAppSelector } from "../../app/hooks"
 import {BsFillPersonFill} from 'react-icons/bs'
 import { logout } from "../../features/auth/authSlice"
 import { useAppDispatch } from "../../app/hooks"
+import Cart from '../cart/Cart'
+
 
 const MainDiv = styled.div <{$primary?: boolean}>`
     width: 100%;
@@ -21,6 +23,7 @@ const InsideDiv = styled.div`
     max-width: 1500px;
     margin: 0 auto;
     align-items: center;
+    position: relative;
 `
 
 const Image = styled.img`
@@ -148,6 +151,15 @@ const BsDiv = styled.div`
    font-size: 2rem;
 `
 
+const CartDiv = styled.div`
+    display: none;
+    position: absolute;
+    width: 90%;
+    max-width: 400px;
+    right: -4px;
+    top: 40px;
+`
+
 const Header = () => {
 
   const { user } = useAppSelector((state: any) => state.auth)
@@ -159,7 +171,7 @@ const Header = () => {
   }
   
   return (
-    <MainDiv $primary>
+    <MainDiv>
 
         <InsideDiv>
 
@@ -185,8 +197,10 @@ const Header = () => {
                 </RightIcon1>  
 
                   <CartAndNumber>
+                    <Link to='/cart'>
                         <RightIcon> <GrCart /> </RightIcon>
                           <Letter> 20 </Letter>
+                      </Link>
                   </CartAndNumber>
 
                 </RightIcons>
@@ -195,9 +209,11 @@ const Header = () => {
                 <GiHamburgerMenu />
             </Extreme>
 
+          <CartDiv>
+             <Cart />
+        </CartDiv>
 
         </InsideDiv>
-
     </MainDiv>
   )
 }

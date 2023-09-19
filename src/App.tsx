@@ -18,6 +18,7 @@ import { useEffect } from "react"
 import { useAppDispatch, useAppSelector } from "./app/hooks"
 import { getProducts, reset } from "./features/products/productSlice"
 import { useNavigate } from 'react-router-dom'
+import CartPage from './Pages/CartPage'
 // import Hamburger from './components/hamburger/Hamburger'
 
 
@@ -47,6 +48,7 @@ const App:React.FC =()=>{
       <Route path="/product/:id" element={<SinglePage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
+      <Route path="/cart" element={<CartPage />} />
       <Route path='*' element={<ErrorPage />} />
     </Routes>
     <Footer />

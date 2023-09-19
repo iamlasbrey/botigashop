@@ -233,7 +233,7 @@ const Quickview = () => {
                               <TopImage src={singleProduct?.img[0]}/>
                           </Top>
                           <Bottom>
-                          <UL>
+                          <UL> 
                             {
                               singleProduct?.img?.map((list)=>(
                                 <LI> <ULImage src={list} /> </LI>

@@ -5,6 +5,7 @@ import { open } from '../features/modals/QuickViewSlice'
 import { useLocation } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import { Link } from 'react-router-dom'
 
 
 
@@ -211,7 +212,7 @@ const ShopPage  = () => {
                 }  
                }
                getProduct()
-        }, [cat])
+        }, [cat, location])
 
 
 
@@ -233,9 +234,6 @@ const ShopPage  = () => {
         }, [filters])
 
         
-        
-
-  
   return (
     <MainDiv>
       <InsideDiv>
@@ -266,8 +264,10 @@ const ShopPage  = () => {
             shopItems?.map((product:myProduct)=>(
               <ProductItem key={product?._id}>
               <Top>
-                <Image src={product?.img[0]} />
-                <Dissapear><Quick onClick={()=>OpenModal(product._id)} >Quick View</Quick></Dissapear>
+              <Link to= {`/product/${product?._id}`} >
+                  <Image src={product?.img[0]} />
+                  <Dissapear><Quick onClick={()=>OpenModal(product._id)} >Quick View</Quick></Dissapear>
+                </Link>
               </Top>
               <Bottom>
                   <Desc>{ product?.title} </Desc>

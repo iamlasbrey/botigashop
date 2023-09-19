@@ -206,10 +206,15 @@ const Featured: React.FC =()=> {
                 {
                     products?.filter((product:myProduct)=>product.featured)?.map((product:myProduct)=>(
                         <GridItem key={product._id}>
+                            
                         <Top>
-                            <Image src={product?.img[0]}/>
-                            <Dissapear> <Quick onClick={()=>OpenModal(product._id)}> Quick View </Quick></Dissapear>
+                            <Link to= {`/product/${product?._id}`} >
+                                <Image src={product?.img[0]}/>
+                                <Dissapear> <Quick onClick={()=>OpenModal(product._id)}> Quick View </Quick></Dissapear>
+                            </Link>
                         </Top>
+                        
+                        
                         <Bottom>
                             <Desc>{product?.desc.slice(0, 70)}</Desc>
                             <Price>${product?.price}</Price>
