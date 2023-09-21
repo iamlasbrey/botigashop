@@ -2,9 +2,11 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import {AiOutlineMinus, AiOutlinePlus} from 'react-icons/ai'
 import { useEffect, useState } from 'react'
-import { myProduct } from '../models/productModel'
 import axios from 'axios'
 import { useParams } from 'react-router-dom'
+import { useAppDispatch } from "../app/hooks"
+import { addProduct } from '../features/cart/cartSlice'
+
 
 const MainDiv = styled.div`
   width: 100%;
@@ -199,8 +201,10 @@ type singleProduct = {
 
 
 const SinglePage = () => {
-  const [SinglePageData, setSinglePageData] = useState<singleProduct>()
+  const [SinglePageData, setSinglePageData] = useState<singleProduct >()
+  const [quantity, setQuantity] = useState<number>(1)
   const params = useParams()
+  const dispatch = useAppDispatch()
   const id = params.id;
 
   useEffect(()=>{
@@ -215,6 +219,20 @@ const SinglePage = () => {
     fetchSingleProduct()
   },[id])  
 
+  const handleQuantity=(type:String)=>{
+    if(type === "dec") {
+      quantity && setQuantity(quantity - 1)
+    }if(type === "asc") {
+      setQuantity(quantity + 1)
+    }
+  }  
+
+  const handleClick=()=>{
+    // @ts-ignore
+    dispatch(addProduct({...SinglePageData, quantity}))   
+  }
+
+  
 
 
   return (
@@ -247,15 +265,15 @@ const SinglePage = () => {
             <Right>
                 <RightHeader>{SinglePageData?.title} </RightHeader>
                 <Price> ${SinglePageData?.price} </Price>
-                <Desc> ${SinglePageData?.desc} </Desc>
+                <Desc> {SinglePageData?.desc} </Desc>
 
                 <CounterCart>
                   <CounterDiv>
                     <Counter>
-                        <AiOutlineMinus style={{cursor: 'pointer'}}/> <SpanNumber>1</SpanNumber> < AiOutlinePlus style={{cursor: 'pointer'}}/>
+                        <AiOutlineMinus style={{cursor: 'pointer'}} onClick={()=>handleQuantity("dec")}/> <SpanNumber> {quantity} </SpanNumber> < AiOutlinePlus style={{cursor: 'pointer'}} onClick={()=>handleQuantity("asc")}/>
                     </Counter>
                     </CounterDiv>
-                  <AddCart> Add To Cart </AddCart>
+                  <AddCart onClick={handleClick}> Add To Cart </AddCart>
                 </CounterCart>
 
                 <Divider />

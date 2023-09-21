@@ -6,6 +6,8 @@ import { useAppDispatch } from "../../app/hooks"
 import { Link } from "react-router-dom"
 
 
+
+
 const MainDiv = styled.div`
     width: 100%;
     margin-top: 4em;
@@ -189,6 +191,8 @@ const ShopNowButton = styled.button`
 const Featured: React.FC =()=> {
 
     const { products } = useAppSelector((state:any) => state.products)
+    const {user}  = useAppSelector((state:any)=>state.auth)
+    
     const dispatch = useAppDispatch()
 
     const OpenModal=(id:string)=>{
@@ -218,7 +222,9 @@ const Featured: React.FC =()=> {
                         <Bottom>
                             <Desc>{product?.desc.slice(0, 70)}</Desc>
                             <Price>${product?.price}</Price>
-                            <Add> Add To Cart </Add>
+                            <Add> 
+                                Add To Cart
+                             </Add>
                         </Bottom>
                     </GridItem>
                     ))

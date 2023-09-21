@@ -163,6 +163,7 @@ const CartDiv = styled.div`
 const Header = () => {
 
   const { user } = useAppSelector((state: any) => state.auth)
+  const { quantity } = useAppSelector((state: any) => state.cartItems)
   const dispatch = useAppDispatch()
   
 
@@ -199,7 +200,7 @@ const Header = () => {
                   <CartAndNumber>
                     <Link to='/cart'>
                         <RightIcon> <GrCart /> </RightIcon>
-                          <Letter> 20 </Letter>
+                          <Letter> {quantity} </Letter>
                       </Link>
                   </CartAndNumber>
 

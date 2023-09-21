@@ -1,5 +1,7 @@
 import styled from 'styled-components'
 import {AiFillCloseSquare, AiOutlineMinus, AiOutlinePlus} from 'react-icons/ai'
+import { useAppDispatch, useAppSelector } from "../app/hooks"
+import { myProduct } from '../models/productModel'
 
 const MainDiv = styled.div`
   width: 100%;
@@ -263,6 +265,10 @@ const Proceed = styled.button`
 
 
 const CartPage = () => {
+
+  const cartItems  = useAppSelector((state:any)=>state.cartItems)
+  
+
   return (
     <MainDiv>
     <InsideDiv>
@@ -276,7 +282,9 @@ const CartPage = () => {
                 <SubTotal>subtotal</SubTotal>
             </Top>
 
-            <BottomContainer>
+            {
+              cartItems?.products?.map((cartitem:myProduct)=>(
+                <BottomContainer>
               
                 <BottomItem>
 
@@ -287,29 +295,34 @@ const CartPage = () => {
                       </Div1>
 
                       <Div2>
-                           <Image src="https://res.cloudinary.com/iamlasbrey/image/upload/v1693226213/botiga/products-all/Allure-420x504_a0grrt.jpg"/>
+                           <Image src={cartitem?.img[0]}/>
                        </Div2>
 
                         <Div3>
-                          <Desc>Eternal Sunset Collection Lip and Cheek</Desc>
+                          <Desc> {cartitem?.title} </Desc>
                         </Div3>
 
                     </ProductDiv>
 
-                    <PriceDiv> <Cost> $40  </Cost> </PriceDiv>
+                    <PriceDiv> <Cost> ${cartitem?.price}  </Cost> </PriceDiv>
 
                     <QuantityDiv>
                       <QuantityDiv1>
                         <AiOutlineMinus style={{fontSize: "1.2rem", cursor: "pointer"}}/>
-                          <QuantityAmount> $40 </QuantityAmount>
+                          <QuantityAmount> {} </QuantityAmount>
                         <AiOutlinePlus style={{fontSize: "1.2rem", cursor: "pointer"}}/>
                         </QuantityDiv1>
                     </QuantityDiv>
 
-                    <SubtotalDiv> <SubTotalPrice> $200  </SubTotalPrice> </SubtotalDiv>
+                    <SubtotalDiv> <SubTotalPrice> ${  }  </SubTotalPrice> </SubtotalDiv>
                 </BottomItem>
 
             </BottomContainer>
+
+              ))
+            }
+
+
         </CartCover>
 
         <CouponDiv>
@@ -330,7 +343,7 @@ const CartPage = () => {
                    <Separate />
 
                    <CartTotalDiv3> 
-                      <CartTotalDesc3> SUBTOTAL </CartTotalDesc3>
+                      <CartTotalDesc3> TOTAL </CartTotalDesc3>
                       <CartTotalAmount3> $50 </CartTotalAmount3>
                    </CartTotalDiv3>
 

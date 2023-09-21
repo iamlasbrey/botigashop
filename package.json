@@ -11,8 +11,10 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
+    "@types/jsonwebtoken": "^9.0.3",
     "axios": "^1.5.0",
     "blurhash": "^2.0.5",
+    "jsonwebtoken": "^9.0.2",
     "react": "^18.2.0",
     "react-blurhash": "^0.3.0",
     "react-dom": "^18.2.0",
