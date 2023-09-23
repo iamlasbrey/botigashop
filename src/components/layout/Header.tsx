@@ -163,7 +163,7 @@ const CartDiv = styled.div`
 const Header = () => {
 
   const { user } = useAppSelector((state: any) => state.auth)
-  const { quantity } = useAppSelector((state: any) => state.cartItems)
+  const { quantity } = useAppSelector((state: any) => state.cart)
   const dispatch = useAppDispatch()
   
 

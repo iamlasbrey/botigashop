@@ -3,13 +3,13 @@ import { createSlice} from "@reduxjs/toolkit";
 
 //define a type for the slice
 interface cartState {
-    products: [],
-    quantity: Number,
+    cartItems: [],
+    quantity: number,
     total: number,
     }
 
 const initialState:cartState = {
-    products: [],
+    cartItems: [],
     quantity: 0,
     total: 0,
 }
@@ -19,13 +19,37 @@ export const cartSlice:any = createSlice({
     name: 'cart',
     initialState,
     reducers: {
-        addProduct:(state:any, action:any)=>{
-            state.quantity += 1,
-            state.products.push(action.payload)
+       addCart:(state:any, action:any)=>{
+            state.quantity += 1
+            state.cartItems.push(action.payload)
             state.total += action.payload.price * action.payload.quantity
-        }
+       },
+       removeItem:(state:any, action:any)=>{
+           state.cartItems =  state.cartItems.filter((item:any)=>item._id !== action.payload)
+       },
+       increaseItem:(state:any, action:any)=>{
+        const cartItem = state.cartItems.find((item:any) => item._id === action.payload)
+        cartItem.quantity = cartItem.quantity + 1
+       },
+       decreaseItem:(state:any, action:any)=>{
+        const cartItem = state.cartItems.find((item:any) => item._id === action.payload)
+        cartItem.quantity === 1 ? cartItem.quantity :  cartItem.quantity = cartItem.quantity - 1
+       },
+       calculateTotal:(state:any)=>{        
+            let quantity = 0
+            let total = 0
+
+           state.cartItems.forEach((item:any)=>{
+                quantity += item.quantity
+                total += item.quantity * item.price 
+           })
+
+           state.quantity = quantity
+           state.total = total
+       }
+
     },
 })
 
-export const { addProduct } = cartSlice.actions
+export const {addCart, removeItem, increaseItem, decreaseItem, calculateTotal, fixItemQuantity} = cartSlice.actions
 export default cartSlice.reducer

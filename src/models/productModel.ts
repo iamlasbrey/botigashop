@@ -8,5 +8,6 @@ export interface myProduct {
         price: number;
         createdAt: string;
         updatedAt: string;
+        quantity: number;
         __v: number;
     }

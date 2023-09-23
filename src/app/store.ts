@@ -9,7 +9,7 @@ export const store = configureStore({
         auth: authReducer,
         products: productReducer,
         quickModal: quickReducer,
-        cartItems : cartReducer
+        cart : cartReducer
     }
 })
 

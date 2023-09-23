@@ -2,6 +2,8 @@ import styled from 'styled-components'
 import {AiFillCloseSquare, AiOutlineMinus, AiOutlinePlus} from 'react-icons/ai'
 import { useAppDispatch, useAppSelector } from "../app/hooks"
 import { myProduct } from '../models/productModel'
+import { removeItem, increaseItem, decreaseItem, calculateTotal } from '../features/cart/cartSlice'
+
 
 const MainDiv = styled.div`
   width: 100%;
@@ -266,8 +268,19 @@ const Proceed = styled.button`
 
 const CartPage = () => {
 
-  const cartItems  = useAppSelector((state:any)=>state.cartItems)
-  
+  const {cartItems, total}  = useAppSelector((state:any)=>state.cart)
+  const dispatch = useAppDispatch()
+
+
+    const increaseFunc=(id:any)=>{
+      dispatch(increaseItem(id))
+      dispatch(calculateTotal())
+    }
+
+    const decreaseFunc=(id:any)=>{
+      dispatch(decreaseItem(id))
+      dispatch(calculateTotal())
+    }
 
   return (
     <MainDiv>
@@ -282,47 +295,45 @@ const CartPage = () => {
                 <SubTotal>subtotal</SubTotal>
             </Top>
 
+
             {
-              cartItems?.products?.map((cartitem:myProduct)=>(
-                <BottomContainer>
+                    cartItems?.map((cartitem:myProduct)=>(
+
+                      <BottomContainer key={cartitem?._id}>
               
-                <BottomItem>
+                      <BottomItem>
+                        
+      
+                          <ProductDiv>
+      
+                            <Div1>
+                                <AiFillCloseSquare onClick={()=>dispatch(removeItem(cartitem?._id))} />
+                            </Div1>
+      
+                            <Div2>  <Image src={cartitem?.img[0]}/> </Div2>
+                              <Div3> <Desc>{cartitem?.title}</Desc> </Div3>
+                          </ProductDiv>
+      
+                          <PriceDiv> <Cost> ${cartitem?.price}  </Cost> </PriceDiv>
+      
+                          <QuantityDiv>
+                            <QuantityDiv1>
+                              <AiOutlineMinus style={{fontSize: "1.2rem", cursor: "pointer"}} onClick={()=>
+                                (decreaseFunc(cartitem?._id))}
+                                />
+                                <QuantityAmount> {cartitem?.quantity} </QuantityAmount>
+                              <AiOutlinePlus style={{fontSize: "1.2rem", cursor: "pointer"}} onClick={()=>(increaseFunc(cartitem?._id))}/>
+                              </QuantityDiv1>
+                          </QuantityDiv>
+      
+                          <SubtotalDiv> <SubTotalPrice> ${ cartitem.price * cartitem?.quantity }  </SubTotalPrice> </SubtotalDiv>
+                      </BottomItem>
+      
+                  </BottomContainer>
+      
 
-                    <ProductDiv>
-
-                      <Div1>
-                          <AiFillCloseSquare />
-                      </Div1>
-
-                      <Div2>
-                           <Image src={cartitem?.img[0]}/>
-                       </Div2>
-
-                        <Div3>
-                          <Desc> {cartitem?.title} </Desc>
-                        </Div3>
-
-                    </ProductDiv>
-
-                    <PriceDiv> <Cost> ${cartitem?.price}  </Cost> </PriceDiv>
-
-                    <QuantityDiv>
-                      <QuantityDiv1>
-                        <AiOutlineMinus style={{fontSize: "1.2rem", cursor: "pointer"}}/>
-                          <QuantityAmount> {} </QuantityAmount>
-                        <AiOutlinePlus style={{fontSize: "1.2rem", cursor: "pointer"}}/>
-                        </QuantityDiv1>
-                    </QuantityDiv>
-
-                    <SubtotalDiv> <SubTotalPrice> ${  }  </SubTotalPrice> </SubtotalDiv>
-                </BottomItem>
-
-            </BottomContainer>
-
-              ))
-            }
-
-
+                    ))
+                  }
         </CartCover>
 
         <CouponDiv>
@@ -337,14 +348,14 @@ const CartPage = () => {
                   <CartTotalTitle> Cart totals </CartTotalTitle>
                   <CartTotalDiv2> 
                       <CartTotalDesc> SUBTOTAL </CartTotalDesc>
-                      <CartTotalAmount> $50 </CartTotalAmount>
+                      <CartTotalAmount> ${0 || total}  </CartTotalAmount>
                    </CartTotalDiv2>
 
                    <Separate />
 
                    <CartTotalDiv3> 
                       <CartTotalDesc3> TOTAL </CartTotalDesc3>
-                      <CartTotalAmount3> $50 </CartTotalAmount3>
+                      <CartTotalAmount3> ${0 || total} </CartTotalAmount3>
                    </CartTotalDiv3>
 
                 <Proceed>

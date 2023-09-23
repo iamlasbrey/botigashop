@@ -19,6 +19,7 @@ import { useAppDispatch, useAppSelector } from "./app/hooks"
 import { getProducts, reset } from "./features/products/productSlice"
 import { useNavigate } from 'react-router-dom'
 import CartPage from './Pages/CartPage'
+import { calculateTotal } from './features/cart/cartSlice'
 // import Hamburger from './components/hamburger/Hamburger'
 
 
@@ -28,12 +29,18 @@ const App:React.FC =()=>{
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const { isError, message } = useAppSelector((state: any) => state.products)
+  const {cartItems } =  useAppSelector((state: any) => state.products)
 
   useEffect(() => {
     if(isError) console.log(message);
     dispatch(getProducts())
     return () => { reset() }
   }, [ dispatch, isError, message, navigate])
+
+  useEffect(() => {
+    dispatch(calculateTotal())
+  }, [cartItems?.quantity])
+  
 
   return (
     <>

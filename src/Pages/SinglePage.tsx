@@ -4,8 +4,8 @@ import {AiOutlineMinus, AiOutlinePlus} from 'react-icons/ai'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useParams } from 'react-router-dom'
-import { useAppDispatch } from "../app/hooks"
-import { addProduct } from '../features/cart/cartSlice'
+import { useAppDispatch, useAppSelector } from "../app/hooks"
+import { addCart } from '.././features/cart/cartSlice'
 
 
 const MainDiv = styled.div`
@@ -196,6 +196,7 @@ type singleProduct = {
         price: number;
         createdAt: string;
         updatedAt: string;
+        quantity: number;
         __v: number;
 };
 
@@ -229,11 +230,8 @@ const SinglePage = () => {
 
   const handleClick=()=>{
     // @ts-ignore
-    dispatch(addProduct({...SinglePageData, quantity}))   
+    dispatch(addCart( {...SinglePageData, quantity }))
   }
-
-  
-
 
   return (
     <MainDiv>
@@ -247,6 +245,7 @@ const SinglePage = () => {
         <ContentDiv>
         <Left>
           <LeftOne>
+          
             <UL>
               {
                 SinglePageData?.img?.map((myimage)=>(
@@ -270,7 +269,7 @@ const SinglePage = () => {
                 <CounterCart>
                   <CounterDiv>
                     <Counter>
-                        <AiOutlineMinus style={{cursor: 'pointer'}} onClick={()=>handleQuantity("dec")}/> <SpanNumber> {quantity} </SpanNumber> < AiOutlinePlus style={{cursor: 'pointer'}} onClick={()=>handleQuantity("asc")}/>
+                        <AiOutlineMinus style={{cursor: 'pointer'}} onClick={()=>handleQuantity("dec")} /> <SpanNumber> { quantity } </SpanNumber> < AiOutlinePlus style={{cursor: 'pointer'}} onClick={()=>handleQuantity("asc")}  />
                     </Counter>
                     </CounterDiv>
                   <AddCart onClick={handleClick}> Add To Cart </AddCart>
